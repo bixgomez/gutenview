@@ -206,6 +206,7 @@ See `end-block-inserter.css`.
 | `enabled` | `true` | General | Master switch |
 | `view_same_tab` | `false` | View & Save | Adds a same-tab View button beside the stock new-tab one |
 | `reposition_snackbar` | `false` | View & Save | Moves the saved notice from bottom-left to top-right |
+| `adjustable_sidebar` | `false` | Editor Layout | Makes the settings sidebar wider and editor-adjustable |
 | `block_outlines` | `'off'` | Discoverability | Block boundary outlines: `off`, `hover`, or `always` |
 | `add_block_links` | `false` | Discoverability | Faint "+" hints between top-level blocks and between columns |
 | `remove_block_button` | `false` | Discoverability | Minus button beside the new-block "+" |
@@ -213,6 +214,14 @@ See `end-block-inserter.css`.
 
 `block_outlines` is the only non-boolean setting. It is sanitized against a
 whitelist; anything unrecognized falls back to `off`.
+
+The adjustable sidebar stores its enabled state with the other site-wide
+GutenView settings. Its pixel width is different: each editor chooses that value
+independently, and the JavaScript stores it through WordPress's preferences data
+store. The resize separator lives under `document.body`, outside Gutenberg's
+React-owned tree, and tracks the sidebar edge with `ResizeObserver`. It starts
+at 400 pixels and can grow to 75% of the viewport, so it also works as a quick
+responsive-testing canvas.
 
 ## Adding a feature
 

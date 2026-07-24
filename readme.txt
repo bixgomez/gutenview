@@ -63,6 +63,14 @@ tabs.
 Move the "saved" confirmation from the far bottom-left corner up to the
 top-right, near the Save button you just clicked.
 
+= Adjustable editor sidebar =
+
+Give the editor settings sidebar a roomier starting width and add a draggable
+edge so each editor can choose how much room it needs. The resize control also
+works with the keyboard, and WordPress remembers each editor's chosen width. It
+can grow to 75% of the viewport, making it useful for quick responsive checks
+inside the editor.
+
 == Installation ==
 
 1. Upload the `gutenview` folder to `/wp-content/plugins/`.
@@ -110,3 +118,4 @@ turns everything off at once while remembering your individual choices.
 * Remove-block button beside the new-block inserter.
 * "View in same tab" button in the editor header.
 * Option to reposition the "saved" notice near the Save button.
+* Wider, editor-adjustable settings sidebar with a saved per-editor width.

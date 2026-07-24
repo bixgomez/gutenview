@@ -100,6 +100,28 @@ function gutenview_register_settings() {
 		)
 	);
 
+	// Editor Layout section, controls that improve the editing workspace itself.
+	add_settings_section(
+		'gutenview_section_editor_layout',
+		__( 'Editor Layout', 'gutenview' ),
+		'gutenview_render_editor_layout_section',
+		'gutenview'
+	);
+
+	add_settings_field(
+		'gutenview_field_adjustable_sidebar',
+		__( 'Adjustable editor sidebar', 'gutenview' ),
+		'gutenview_render_checkbox_field',
+		'gutenview',
+		'gutenview_section_editor_layout',
+		array(
+			'key'         => 'adjustable_sidebar',
+			'label_for'   => 'gutenview_adjustable_sidebar',
+			'label'       => __( 'Make the editor sidebar wider and adjustable', 'gutenview' ),
+			'description' => __( 'Starts the settings sidebar at a roomier width and lets each editor resize it by dragging its left edge. The chosen width is saved as an editor preference.', 'gutenview' ),
+		)
+	);
+
 	// Discoverability section, affordance toggles land here as features are built.
 	add_settings_section(
 		'gutenview_section_discoverability',
@@ -185,6 +207,7 @@ function gutenview_sanitize_settings( $input ) {
 	$output['enabled']             = ! empty( $input['enabled'] );
 	$output['view_same_tab']       = ! empty( $input['view_same_tab'] );
 	$output['reposition_snackbar'] = ! empty( $input['reposition_snackbar'] );
+	$output['adjustable_sidebar']  = ! empty( $input['adjustable_sidebar'] );
 	$output['add_block_links']     = ! empty( $input['add_block_links'] );
 	$output['remove_block_button'] = ! empty( $input['remove_block_button'] );
 	$output['end_block_inserter']  = ! empty( $input['end_block_inserter'] );
@@ -280,6 +303,15 @@ function gutenview_render_select_field( $args ) {
  */
 function gutenview_render_view_section() {
 	echo '<p>' . esc_html__( 'Small quality-of-life tweaks around viewing and saving.', 'gutenview' ) . '</p>';
+}
+
+/**
+ * Intro copy for the Editor Layout section.
+ *
+ * @return void
+ */
+function gutenview_render_editor_layout_section() {
+	echo '<p>' . esc_html__( 'Give editors more control over the space around their content.', 'gutenview' ) . '</p>';
 }
 
 /**
