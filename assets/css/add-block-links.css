@@ -1,0 +1,123 @@
+/**
+ * GutenView: Add-block hints.
+ *
+ * Faint "ghost +" hints where WordPress lets you insert:
+ *   - between top-level blocks (vertical gap), and
+ *   - between columns inside a Columns block (horizontal gap).
+ *
+ * Each is purely cosmetic (`pointer-events: none`); WordPress's own inserter is a
+ * high-z-index popover that renders on top of the ghost as you approach, so no
+ * fade/hover logic is needed. Positions come from custom properties written by
+ * assets/js/add-block-links.js, which measures the theme's actual (variable) gaps:
+ *   --gutenview-gap             vertical gap below a top-level block
+ *   --gutenview-ghost-display   "none" on the final top-level block (no native "+")
+ *   --gutenview-prevsep-gap     gap below a separator, drawn by the NEXT block
+ *   --gutenview-prevsep-display "none" to suppress that carried ghost
+ *   --gutenview-col-gap         horizontal gap to the right of a column
+ *   --gutenview-col-ghost-display "none" on the last column (no native "+")
+ *
+ * @package GutenView
+ */
+
+/* Positioning context for the ghosts. */
+.is-root-container > .block-editor-block-list__block,
+.block-editor-block-list__block[data-type="core/column"] {
+	position: relative;
+}
+
+/* Shared ghost appearance (matches the native dark inserter toggle). */
+.is-root-container > .block-editor-block-list__block::after,
+.is-root-container > hr.block-editor-block-list__block + .block-editor-block-list__block::before,
+.block-editor-block-list__block[data-type="core/column"]::after {
+	content: "";
+	position: absolute;
+	z-index: 6;
+	width: 16px;
+	height: 16px;
+	border-radius: 2px;
+	background-color: #1e1e1e;
+	background-image: url( "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M11 5h2v14h-2zM5 11h14v2H5z'/%3E%3C/svg%3E" );
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 11px;
+	pointer-events: none;
+	/* Start hidden and fade in after a beat, so ghosts settle into their measured
+	   positions before appearing. */
+	opacity: 0;
+	animation: gutenview-ghost-fade-in 0.4s linear 1s forwards;
+}
+
+/* Between-block ghost: centered in the vertical gap below the block. */
+.is-root-container > .block-editor-block-list__block::after {
+	display: var( --gutenview-ghost-display, block );
+	left: 50%;
+	bottom: 0;
+	transform: translate( -50%, calc( 50% + var( --gutenview-gap, 0px ) / 2 ) );
+}
+
+/*
+ * Void-block ghost: a separator is an <hr>, a void element that can't host
+ * ::after, so the ghost for the gap below it is rendered as the ::before of the
+ * following block (a real, non-void element) instead.
+ */
+.is-root-container > hr.block-editor-block-list__block + .block-editor-block-list__block::before {
+	display: var( --gutenview-prevsep-display, block );
+	left: 50%;
+	top: 0;
+	transform: translate( -50%, calc( -50% - var( --gutenview-prevsep-gap, 0px ) / 2 ) );
+}
+
+/* Between-column ghost: centered in the horizontal gap to the right of the column. */
+.block-editor-block-list__block[data-type="core/column"]::after {
+	display: var( --gutenview-col-ghost-display, block );
+	right: 0;
+	top: 50%;
+	transform: translate( calc( 50% + var( --gutenview-col-gap, 0px ) / 2 ), -50% );
+}
+
+/*
+ * When Gutenberg highlights a block (e.g. while hovering the parent-selector
+ * button), it draws its own ring on ::after with `inset: 0`, the same pseudo
+ * our ghost uses. Core never declares width/height, so our 16px box survives and
+ * traps the ring at ghost size, so it never appears. Hand the pseudo back to core
+ * for that moment; our ghost simply sits out, which is fine since it's transient
+ * and the ring is the more useful cue right then.
+ *
+ * Declared LAST so it also beats the block and column ghost rules above, which
+ * have the same specificity.
+ */
+.block-editor-block-list__block.is-highlighted::after {
+	display: block;
+	width: auto;
+	height: auto;
+	transform: none;
+	background: none;
+	border-radius: 0;
+	opacity: 1;
+	animation: none;
+}
+
+@keyframes gutenview-ghost-fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 0.28;
+	}
+}
+
+/*
+ * Reduced motion: show the ghosts without the settle-then-appear fade.
+ *
+ * The resting opacity has to be restated here. The base rule starts the ghost at
+ * opacity 0 and relies on the animation's end state to reveal it, so removing the
+ * animation alone would hide every ghost outright.
+ */
+@media ( prefers-reduced-motion: reduce ) {
+	.is-root-container > .block-editor-block-list__block::after,
+	.is-root-container > hr.block-editor-block-list__block + .block-editor-block-list__block::before,
+	.block-editor-block-list__block[data-type="core/column"]::after {
+		animation: none;
+		opacity: 0.28;
+	}
+}

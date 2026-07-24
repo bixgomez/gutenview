@@ -1,0 +1,76 @@
+/**
+ * GutenView: Block outlines (shared base).
+ *
+ * Loaded in BOTH outline modes, with the mode stylesheet layered on top:
+ *
+ *   block-outlines.css  +  block-outlines-always.css
+ *   block-outlines.css  +  block-outlines-hover.css
+ *
+ * Everything the two modes agree on lives here: the colour language, the line
+ * geometry, the hover state, and motion. A mode file should only have to say
+ * what makes that mode different, which is the resting line and how selection is
+ * treated.
+ *
+ * Uses `outline` with a negative `outline-offset` so lines sit just inside the
+ * block edge with zero layout shift.
+ *
+ * @package GutenView
+ */
+
+.editor-styles-wrapper {
+	/*
+	 * Resting boundary. Transparent by default, which is what "on hover" wants:
+	 * the line is present but invisible, so its colour has something to fade in
+	 * from. "Always" mode overrides this with a visible ambient line.
+	 */
+	--gutenview-block-outline-color: transparent;
+
+	/*
+	 * Everything selection-related borrows WordPress's own colour language, where
+	 * blue means "selected" / "about to be selected", so hover, the containment
+	 * chain and the current block are all tints of the same admin blue, growing
+	 * stronger as they become more relevant to what you're doing:
+	 *
+	 *   ancestors (35%)  <  hover (50%)  <  selected (100%)
+	 *
+	 * All derived from --wp-admin-theme-color, so the whole ramp follows whatever
+	 * admin colour scheme the user has set.
+	 *
+	 * NOTE: color-mix() needs Chrome 111+ / Firefox 113+ / Safari 16.2+. Swap for
+	 * plain hex values if that floor is ever too high.
+	 */
+	--gutenview-block-outline-color-hover: color-mix( in srgb, var( --wp-admin-theme-color, #3858e9 ) 50%, #fff );
+	--gutenview-block-outline-color-ancestor: color-mix( in srgb, var( --wp-admin-theme-color, #3858e9 ) 35%, #fff );
+	--gutenview-block-outline-color-active: var( --wp-admin-theme-color, #3858e9 );
+
+	/*
+	 * Motion is defined once, here, but APPLIED by the mode files, because the two
+	 * modes deliberately transition at different moments (see block-outlines-hover
+	 * .css for why its fade is one-directional). Routing it through a custom
+	 * property means the reduced-motion override below reaches both without having
+	 * to out-specify a rule in a stylesheet that loads later.
+	 */
+	--gutenview-block-outline-transition: outline-color 0.2s linear;
+}
+
+/* The line itself: same geometry in both modes. */
+.block-editor-block-list__block {
+	outline: 2px dashed var( --gutenview-block-outline-color );
+	outline-offset: -2px;
+}
+
+/* Hover: "about to be selected". Same in both modes. */
+.block-editor-block-list__block:hover,
+.block-editor-block-list__block.is-hovered {
+	outline-color: var( --gutenview-block-outline-color-hover );
+}
+
+/*
+ * Reduced motion: outlines still change colour, they just change instantly.
+ * Every colour state above is preserved.
+ */
+@media ( prefers-reduced-motion: reduce ) {
+	.editor-styles-wrapper {
+		--gutenview-block-outline-transition: none;
+	}
+}

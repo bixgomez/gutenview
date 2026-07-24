@@ -1,0 +1,65 @@
+/**
+ * GutenView: Block outlines (always).
+ *
+ * Layered on top of block-outlines.css, which supplies the colour language, the
+ * line geometry and the hover state. This file only describes what makes
+ * "always" different: a visible resting line, and a containment chain.
+ *
+ * The outline does ONE job: show where each block begins and ends. Every block
+ * gets the same quiet dashed line, with no depth encoding. A single flat line
+ * per block can't reliably express a relationship *between* blocks, which is what
+ * hierarchy is.
+ *
+ * Hierarchy gets its own channel, on demand: selecting a block lights up its
+ * containers via Gutenberg's own `.has-child-selected` class, tracing the chain
+ * you're inside. Solid reads as "you are in here"; dashed is just an ambient
+ * boundary. So depth is answered at the moment you're asking it, rather than
+ * whispered at every block all the time.
+ *
+ * @package GutenView
+ */
+
+.editor-styles-wrapper {
+	/*
+	 * The ambient resting line, which is what "always" means. Translucent black at
+	 * 10%, settled on after trying 25% and 15%.
+	 *
+	 * This is NOT a return to the rejected "translucent compositing" idea, where
+	 * translucency was meant to CONVEY depth and the darkening at coincident edges
+	 * was a false signal. Now that hierarchy lives on the ancestor chain, the
+	 * resting line is purely ambient, so faint stacking is just texture.
+	 */
+	--gutenview-block-outline-color: rgba( 0, 0, 0, 0.1 );
+}
+
+/* Both directions animate here, unlike hover mode. */
+.block-editor-block-list__block {
+	transition: var( --gutenview-block-outline-transition );
+}
+
+/*
+ * Ancestors of the selected block: the containment chain. Solid, so the chain
+ * reads as a different KIND of thing rather than just another shade.
+ * Declared after the base file's :hover so it still reads while pointing at one
+ * of the containers.
+ *
+ * `!important` because Gutenberg manipulates outlines on selection-related states
+ * via inline styles; drop it if it proves unnecessary.
+ */
+.block-editor-block-list__block.has-child-selected {
+	outline-style: solid !important;
+	outline-color: var( --gutenview-block-outline-color-ancestor ) !important;
+}
+
+/*
+ * Selected: full admin blue, solid (the deepest point of the chain).
+ *
+ * `!important` is required because Gutenberg manages the selected block's outline
+ * via inline styles (JS), which a normal rule can't override.
+ */
+.block-editor-block-list__block.is-selected {
+	outline-style: solid !important;
+	outline-color: var( --gutenview-block-outline-color-active ) !important;
+	outline-width: 2px !important;
+	outline-offset: -2px !important;
+}

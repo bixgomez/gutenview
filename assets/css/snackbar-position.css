@@ -1,0 +1,19 @@
+/**
+ * GutenView: Reposition save snackbar.
+ *
+ * Moves the "saved" snackbar from the far bottom-left corner up to the
+ * top-right, near the Save button.
+ *
+ * @package GutenView
+ */
+
+.components-snackbar-list {
+	top: 60px !important;
+	right: 12px !important;
+	bottom: auto !important;
+	left: auto !important;
+}
+
+.components-snackbar-list__notice-container .components-snackbar {
+	margin: 0 0 0 auto;
+}

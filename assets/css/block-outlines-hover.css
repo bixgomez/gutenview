@@ -1,0 +1,41 @@
+/**
+ * GutenView: Block outlines (on hover).
+ *
+ * Layered on top of block-outlines.css, which supplies the colour language, the
+ * line geometry and the hover state. This file only describes what makes "hover"
+ * different: nothing shows at rest, and selection is left alone.
+ *
+ * A finding aid rather than an ambient map. Blocks reveal their outline only
+ * while hovered, so an editor can locate a block's edges on demand. Once a block
+ * is selected (i.e. being edited) it shows no GutenView outline at all, so the
+ * editor looks normal while you work.
+ *
+ * The resting line is transparent (inherited from the base file), not absent, so
+ * the colour has something to fade in from.
+ *
+ * @package GutenView
+ */
+
+/*
+ * The transition lives ONLY on the hover state, which makes the fade
+ * deliberately one-directional: in on arrival, instant on leaving. Putting it on
+ * the base rule would fade the outline back OUT, so a block that was briefly
+ * hovered on the way to clicking elsewhere would flash as it faded.
+ */
+.block-editor-block-list__block:hover,
+.block-editor-block-list__block.is-hovered {
+	transition: var( --gutenview-block-outline-transition );
+}
+
+/*
+ * Selected: no GutenView outline. Once you're editing a block it looks normal,
+ * even while the cursor is over it (which would otherwise trigger :hover).
+ *
+ * Note this mode deliberately does NOT draw the ancestor chain that "always"
+ * mode does. The chain answers "where am I nested?", which is a question about
+ * structure; this mode exists for the narrower question "where is this block?".
+ */
+.block-editor-block-list__block.is-selected:hover,
+.block-editor-block-list__block.is-selected.is-hovered {
+	outline-color: transparent;
+}

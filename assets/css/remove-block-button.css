@@ -1,0 +1,18 @@
+/**
+ * GutenView: Remove-block button.
+ *
+ * Lays the injected minus button beside core's "+" on the empty-block inserter.
+ * The container is only switched to flex when our button is actually present
+ * (`:has()`), so core's own layout is left untouched everywhere else.
+ *
+ * The button carries core's own `components-button block-editor-inserter__toggle`
+ * classes, so it inherits the "+" button's size, shape and hover styling for free.
+ *
+ * @package GutenView
+ */
+
+.block-editor-block-list__empty-block-inserter:has( .gutenview-remove-block ) {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+}

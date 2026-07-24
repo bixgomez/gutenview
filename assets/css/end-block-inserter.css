@@ -1,0 +1,86 @@
+/**
+ * GutenView: Add-block button at the end.
+ *
+ * Styles the real "+" button injected below the last top-level block. Unlike the
+ * ghost hints this one is genuinely interactive, so it gets a pointer cursor and
+ * brightens on hover/focus.
+ *
+ * Note the button lives inside the editor canvas, where the THEME's editor styles
+ * also apply (classic themes routinely style bare `button` elements), so the
+ * appearance is reset explicitly rather than assumed.
+ *
+ * @package GutenView
+ */
+
+.gutenview-end-inserter {
+	/* Reset anything the theme's editor styles put on bare buttons. */
+	appearance: none;
+	-webkit-appearance: none;
+	border: 0;
+	box-shadow: none;
+	font: inherit;
+	text-shadow: none;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	margin: 0 auto;
+	border-radius: 2px;
+	background-color: #1e1e1e;
+	color: #fff;
+	cursor: pointer;
+	opacity: 0.4;
+	transition: opacity 0.15s linear;
+	/*
+	 * Fade in after a beat, like the ghost hints. `backwards` (not `forwards`)
+	 * matters: it holds the 0 opacity during the delay, then hands control back to
+	 * the rule above once the animation ends, so the hover brighten still works.
+	 * `forwards` would freeze opacity at 0.4 and override :hover entirely.
+	 */
+	animation: gutenview-end-inserter-fade-in 0.4s linear 1s backwards;
+}
+
+@keyframes gutenview-end-inserter-fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 0.4;
+	}
+}
+
+.gutenview-end-inserter:hover {
+	opacity: 1;
+	background-color: #1e1e1e;
+	color: #fff;
+}
+
+/*
+ * Keyboard focus needs a genuine indicator, not just the opacity lift that hover
+ * gets: an opacity change alone does not distinguish focus from hover, and the
+ * reset above clears border and box-shadow, so nothing else would mark it. Uses
+ * :focus-visible so a mouse click does not leave a ring behind.
+ */
+.gutenview-end-inserter:focus-visible {
+	opacity: 1;
+	background-color: #1e1e1e;
+	color: #fff;
+	outline: 2px solid var( --wp-admin-theme-color, #3858e9 );
+	outline-offset: 2px;
+}
+
+.gutenview-end-inserter svg {
+	display: block;
+	fill: currentColor;
+}
+
+/* Reduced motion: appear immediately, at the resting opacity of the base rule. */
+@media ( prefers-reduced-motion: reduce ) {
+	.gutenview-end-inserter {
+		animation: none;
+		transition: none;
+	}
+}

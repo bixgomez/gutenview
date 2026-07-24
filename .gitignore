@@ -1,0 +1,19 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dependencies and build output (none yet; here for when a build step is added)
+/node_modules/
+/vendor/
+/build/
+/dist/
+
+# Generated translation binaries (keep the source .pot / .po, ignore compiled .mo)
+*.mo
+
+# Logs and local overrides
+*.log
