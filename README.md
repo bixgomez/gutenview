@@ -31,7 +31,7 @@ is additive and reversible.
 
 ## Requirements
 
-- WordPress 7.0 or later (developed and tested against 7.0)
+- WordPress 6.5 or later
 - PHP 7.4 or later
 
 There is no build step. The plugin ships plain PHP, CSS, and JavaScript, all
@@ -293,8 +293,9 @@ Outstanding before submission:
 - Confirm the `gutenview` slug is available
 - Run Plugin Check
 - Add screenshots
-- `Requires at least` is set to 7.0 to match what has actually been tested. If a
-  lower floor is wanted, verify against that version before lowering the claim.
+- `Requires at least` is set to 6.5. Development was against 7.0; the plugin is
+  also being tested on 6.9. The 6.5 to 6.8 range is a declared floor that has not
+  been verified directly, so spot-check it before relying on it.
 
 WordPress.org discourages "Gutenberg" in plugin names and slugs. "GutenView"
 should be acceptable, but confirm before release.

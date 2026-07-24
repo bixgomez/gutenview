@@ -4,7 +4,7 @@
  * Plugin URI:        https://gutenview.com
  * Description:       Makes the WordPress block editor's hidden editing affordances visible and discoverable.
  * Version:           0.1.0
- * Requires at least: 7.0
+ * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            Richard Gilbert
  * License:           GPL-2.0-or-later

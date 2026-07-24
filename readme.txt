@@ -1,7 +1,7 @@
 === GutenView ===
 Contributors: fezziwigmedia
 Tags: block editor, gutenberg, editor, usability
-Requires at least: 7.0
+Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
 Stable tag: 0.1.0
