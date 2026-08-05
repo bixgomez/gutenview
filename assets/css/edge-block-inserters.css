@@ -1,0 +1,127 @@
+/**
+ * GutenView: Add-block buttons at the edges.
+ *
+ * Styles the real "+" buttons injected above the first and below the last
+ * top-level block. Both edges share one rule set: they are the same control, and
+ * only their placement differs. They rest at the ghost hints' size so the set
+ * looks consistent, but unlike the ghosts they are genuinely interactive, so they
+ * get a pointer cursor and both brighten and grow on hover/focus.
+ *
+ * Note the buttons live inside the editor canvas, where the THEME's editor styles
+ * also apply (classic themes routinely style bare `button` elements), so the
+ * appearance is reset explicitly rather than assumed.
+ *
+ * @package GutenView
+ */
+
+.gutenview-edge-inserter {
+	/* Reset anything the theme's editor styles put on bare buttons. */
+	appearance: none;
+	-webkit-appearance: none;
+	border: 0;
+	box-shadow: none;
+	font: inherit;
+	text-shadow: none;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	/*
+	 * Rests at the same 16px as the ghost hints in add-block-links.css so the
+	 * whole set reads as one family, then grows to 24px on hover/focus. The growth
+	 * is a transform rather than a width/height change: it costs no layout, so the
+	 * canvas does not shift under the pointer, and hit testing follows the scaled
+	 * box, so the larger target is real.
+	 */
+	width: 16px;
+	height: 16px;
+	padding: 0;
+	/*
+	 * Horizontally centered here; the vertical offset is measured and written
+	 * inline by edge-block-inserters.js, which centers each button in one theme
+	 * block gap outside the block list. Until that first measurement lands the
+	 * button is still inside the fade-in delay, so the starting value is never
+	 * seen.
+	 */
+	margin: 0 auto;
+	border-radius: 2px;
+	background-color: #1e1e1e;
+	color: #fff;
+	cursor: pointer;
+	opacity: 0.4;
+	transform: scale( 1 );
+	transition: opacity 0.15s linear, transform 0.15s linear;
+	/*
+	 * Fade in after a beat, like the ghost hints. `backwards` (not `forwards`)
+	 * matters: it holds the 0 opacity during the delay, then hands control back to
+	 * the rule above once the animation ends, so the hover brighten still works.
+	 * `forwards` would freeze opacity at 0.4 and override :hover entirely.
+	 */
+	animation: gutenview-edge-inserter-fade-in 0.4s linear 1s backwards;
+}
+
+/*
+ * The start button takes up no room in the flow, so the top of the document sits
+ * exactly where it would without it. Like the ghost hints, it occupies space the
+ * theme already provides rather than creating its own: the negative margin cancels
+ * its own height, and edge-block-inserters.js offsets it into the space above the
+ * first block with `top`, which is a paint-time move and shifts nothing.
+ *
+ * The end button needs none of this. It is last in the flow, so the room it takes
+ * is room at the very bottom of the canvas, where there is nothing to displace.
+ */
+.gutenview-edge-inserter--start {
+	position: relative;
+	margin-bottom: -16px;
+}
+
+@keyframes gutenview-edge-inserter-fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 0.4;
+	}
+}
+
+.gutenview-edge-inserter:hover {
+	opacity: 1;
+	background-color: #1e1e1e;
+	color: #fff;
+	transform: scale( 1.5 );
+}
+
+/*
+ * Keyboard focus needs a genuine indicator, not just the opacity lift that hover
+ * gets: an opacity change alone does not distinguish focus from hover, and the
+ * reset above clears border and box-shadow, so nothing else would mark it. Uses
+ * :focus-visible so a mouse click does not leave a ring behind.
+ */
+.gutenview-edge-inserter:focus-visible {
+	opacity: 1;
+	background-color: #1e1e1e;
+	color: #fff;
+	transform: scale( 1.5 );
+	outline: 2px solid var( --wp-admin-theme-color, #3858e9 );
+	outline-offset: 2px;
+}
+
+/*
+ * 11px inside the 16px box, the same proportion the ghost hints use for their
+ * background-size. The button's transform scales this along with everything
+ * else, so the glyph never needs a size of its own for the hover state.
+ */
+.gutenview-edge-inserter svg {
+	display: block;
+	width: 11px;
+	height: 11px;
+	fill: currentColor;
+}
+
+/* Reduced motion: appear immediately, at the resting opacity of the base rule. */
+@media ( prefers-reduced-motion: reduce ) {
+	.gutenview-edge-inserter {
+		animation: none;
+		transition: none;
+	}
+}

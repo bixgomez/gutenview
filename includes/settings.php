@@ -19,18 +19,22 @@ if ( ! defined( 'ABSPATH' ) ) {
  * The single source of truth for setting keys and their defaults. Every new
  * toggle should add its key/default here.
  *
+ * GutenView ships with every enhancement on, so a fresh install immediately
+ * shows what the plugin does. Editors turn off whatever they do not want.
+ *
  * @return array
  */
 function gutenview_default_settings() {
 	return array(
-		'enabled'             => true,  // Master switch.
-		'view_same_tab'       => false, // Same-tab "View" button in the editor header.
-		'reposition_snackbar' => false, // Move the "saved" notice up near the Save button.
-		'adjustable_sidebar'  => false, // Wider editor sidebar with an editor-adjustable width.
-		'block_outlines'      => 'off', // Block boundary outlines: 'off' | 'hover' | 'always'.
-		'add_block_links'     => false, // Persistent "ghost +" hint between top-level blocks.
-		'remove_block_button' => false, // "Minus" button beside the empty-block inserter.
-		'end_block_inserter'  => false, // Real "+" button below the final top-level block.
+		'enabled'               => true,     // Master switch.
+		'view_same_tab'         => true,     // Same-tab "View" button in the editor header.
+		'reposition_snackbar'   => true,     // Move the "saved" notice up near the Save button.
+		'adjustable_sidebar'    => true,     // Wider editor sidebar with an editor-adjustable width.
+		'block_outlines'        => 'always', // Block boundary outlines: 'off' | 'hover' | 'always'.
+		'add_block_links'       => true,     // Persistent "ghost +" hint between top-level blocks.
+		'remove_block_button'   => true,     // "Minus" button beside the empty-block inserter.
+		'edge_block_inserters'  => true,     // Real "+" buttons above the first and below the last block.
+		'toolbar_delete_button' => true,     // Delete control in the block toolbar, out of the overflow menu.
 	);
 }
 

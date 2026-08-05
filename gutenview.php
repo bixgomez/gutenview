@@ -44,6 +44,11 @@ define( 'GUTENVIEW_URL', plugin_dir_url( __FILE__ ) );
  */
 define( 'GUTENVIEW_OPTION', 'gutenview_settings' );
 
+// Activation routine, registered outside the bootstrap because activation runs
+// before the plugin is loaded normally.
+require_once GUTENVIEW_DIR . 'includes/activation.php';
+register_activation_hook( __FILE__, 'gutenview_activate' );
+
 /**
  * Bootstrap the plugin.
  *
@@ -66,7 +71,8 @@ function gutenview_bootstrap() {
 		require_once GUTENVIEW_DIR . 'includes/features/block-outlines.php';
 		require_once GUTENVIEW_DIR . 'includes/features/add-block-links.php';
 		require_once GUTENVIEW_DIR . 'includes/features/remove-block-button.php';
-		require_once GUTENVIEW_DIR . 'includes/features/end-block-inserter.php';
+		require_once GUTENVIEW_DIR . 'includes/features/edge-block-inserters.php';
+		require_once GUTENVIEW_DIR . 'includes/features/toolbar-delete-button.php';
 	}
 }
 add_action( 'plugins_loaded', 'gutenview_bootstrap' );

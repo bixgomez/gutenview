@@ -47,6 +47,7 @@ readme.txt                         WordPress.org directory listing
 README.md                          This file
 includes/
   settings.php                     Data accessors, defaults (single source of truth)
+  activation.php                   Seeds the defaults on first activation
   assets.php                       Shared enqueue helpers: versioning, translations
   admin/
     settings-page.php              Settings -> GutenView, field renderers, sanitizer
@@ -89,10 +90,15 @@ Accessors:
 - `gutenview_get_setting( $key )` returns one value, or `null` for unknown keys
 - `gutenview_is_enabled()` reports the master switch
 
-The master switch defaults on; individual features default off. Turning the
-master switch off suppresses every feature while preserving each individual
-toggle, so a site can disable the plugin's effects wholesale without losing its
-configuration.
+Every setting defaults on, so a fresh install shows what the plugin does without
+anyone having to go hunting through a settings page first. Editors switch off
+whatever they do not want. Turning the master switch off suppresses every
+feature while preserving each individual toggle, so a site can disable the
+plugin's effects wholesale without losing its configuration.
+
+`gutenview_activate()` in `includes/activation.php` writes the defaults to the
+option on first activation. It uses `add_option()`, so reactivating an existing
+install never overwrites choices already made.
 
 Because every setting lives inside that one option, `uninstall.php` only has to
 delete a single key. Note that it repeats the option name as a literal string,
@@ -159,6 +165,13 @@ no code at all.
 fully reversible, and cannot break the editor's behavior. Reach for JavaScript
 only when something genuinely has to be measured or dispatched.
 
+**Extend core's UI through core's own extension points.** The corollary to not
+fighting React: where an affordance belongs *inside* a React-owned component, do
+not inject it. The toolbar delete button is the one feature that lives inside
+such a component, and it registers through the `editor.BlockEdit` filter with a
+BlockControls fill, so React renders it and keeps rendering it. See
+`toolbar-delete-button.js`.
+
 **Every affordance is independently configurable.** Sites differ, and editors
 differ. Nothing is bundled into an all-or-nothing mode.
 
@@ -197,20 +210,21 @@ hides its hint for the same affordance.
 **Blocks inside the canvas inherit the theme's editor styles.** Classic themes
 style bare `button` elements, so any real control injected into the canvas has to
 reset its own appearance explicitly rather than assume a neutral starting point.
-See `end-block-inserter.css`.
+See `edge-block-inserters.css`.
 
 ## Features
 
 | Setting key | Default | Section | What it does |
 |---|---|---|---|
 | `enabled` | `true` | General | Master switch |
-| `view_same_tab` | `false` | View & Save | Adds a same-tab View button beside the stock new-tab one |
-| `reposition_snackbar` | `false` | View & Save | Moves the saved notice from bottom-left to top-right |
-| `adjustable_sidebar` | `false` | Editor Layout | Makes the settings sidebar wider and editor-adjustable |
-| `block_outlines` | `'off'` | Discoverability | Block boundary outlines: `off`, `hover`, or `always` |
-| `add_block_links` | `false` | Discoverability | Faint "+" hints between top-level blocks and between columns |
-| `remove_block_button` | `false` | Discoverability | Minus button beside the new-block "+" |
-| `end_block_inserter` | `false` | Discoverability | Working "+" below the final top-level block |
+| `view_same_tab` | `true` | View & Save | Adds a same-tab View button beside the stock new-tab one |
+| `reposition_snackbar` | `true` | View & Save | Moves the saved notice from bottom-left to top-right |
+| `adjustable_sidebar` | `true` | Editor Layout | Makes the settings sidebar wider and editor-adjustable |
+| `block_outlines` | `'always'` | Discoverability | Block boundary outlines: `off`, `hover`, or `always` |
+| `add_block_links` | `true` | Discoverability | Faint "+" hints between top-level blocks and between columns |
+| `remove_block_button` | `true` | Discoverability | Minus button beside the new-block "+" |
+| `edge_block_inserters` | `true` | Discoverability | Working "+" above the first and below the final top-level block |
+| `toolbar_delete_button` | `true` | Discoverability | Delete control in the block toolbar, out of the overflow menu |
 
 `block_outlines` is the only non-boolean setting. It is sanitized against a
 whitelist; anything unrecognized falls back to `off`.
@@ -226,7 +240,7 @@ responsive-testing canvas.
 ## Adding a feature
 
 1. Add the setting key and its default to `gutenview_default_settings()` in
-   `includes/settings.php`. Default to off.
+   `includes/settings.php`. Default to on, like every other setting.
 2. Add a sanitizer entry in `gutenview_sanitize_settings()` in
    `includes/admin/settings-page.php`. Booleans use `! empty()`; anything with a
    fixed set of values gets a whitelist check.

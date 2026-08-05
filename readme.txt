@@ -19,7 +19,8 @@ the right place. Experienced users have learned to live with this. Clients,
 editors, and anyone who updates a page once a month have not.
 
 GutenView makes those controls visible. Every enhancement is a separate setting,
-so you can turn on only what your editors actually need and leave the rest off.
+and they all start switched on, so you can see what the plugin does right away
+and then switch off anything your editors do not need.
 
 It is not a page builder. The block editor stays exactly as it is, and GutenView
 only removes friction around it. Blocks do not need to be rewritten or to opt in,
@@ -41,10 +42,19 @@ Place a faint "+" at each block boundary, and between columns, so it is obvious
 where a new block would go. As you approach one, WordPress's own inserter takes
 over, so clicking behaves exactly as it normally does.
 
-= Add-block button at the end =
+= Add-block buttons at the edges =
 
-Add a working "+" beneath the final block, so there is always an obvious place to
-continue writing rather than a thin strip of page to hunt for.
+Add a working "+" above the first block and beneath the final one, the two spots
+where WordPress offers no inserter of its own. There is always an obvious place
+to start writing and to continue, rather than a thin strip of page to hunt for.
+
+= Delete button in the block toolbar =
+
+Deleting a block is a common, deliberate action, but WordPress keeps it inside
+the toolbar's overflow ("three dots") menu. This adds a Delete button to the
+toolbar itself, in its own group just before that menu. It is withheld for
+blocks WordPress will not let you remove, and deletion undoes normally with
+Ctrl+Z.
 
 = Remove-block button =
 
@@ -75,10 +85,12 @@ inside the editor.
 
 1. Upload the `gutenview` folder to `/wp-content/plugins/`.
 2. Activate the plugin through the "Plugins" screen in WordPress.
-3. Go to Settings > GutenView and turn on the enhancements you want.
+3. Go to Settings > GutenView (or the "Settings" link in the plugin's row on the
+   Plugins screen) to review the enhancements.
 
-All individual enhancements start switched off, so activating the plugin changes
-nothing until you choose something.
+Every enhancement starts switched on, so the plugin does its thing as soon as it
+is activated. Turn off anything you do not want, or use the master switch to
+suppress all of them at once without losing your individual choices.
 
 == Frequently Asked Questions ==
 
@@ -105,16 +117,20 @@ untouched.
 
 = Can I turn on just one thing? =
 
-Yes. Every enhancement is a separate setting. There is also a master switch that
-turns everything off at once while remembering your individual choices.
+Yes. Every enhancement is a separate setting, so you can switch off the ones you
+do not want and keep the rest. There is also a master switch that turns
+everything off at once while remembering your individual choices.
 
 == Changelog ==
 
 = 0.1.0 =
 * Settings page (Settings > GutenView) with a master switch and per-feature toggles.
+* "Settings" link in the plugin's row on the Plugins screen.
+* Every enhancement switched on by default, seeded on first activation.
 * Block outlines, with off, on-hover, and always modes, including selected-block and parent-container states.
 * Add-block hints between top-level blocks and between columns.
-* Add-block button below the final top-level block.
+* Add-block buttons above the first and below the final top-level block.
+* Delete button in the block toolbar, in its own group before the overflow menu.
 * Remove-block button beside the new-block inserter.
 * "View in same tab" button in the editor header.
 * Option to reposition the "saved" notice near the Save button.

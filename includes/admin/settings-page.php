@@ -27,6 +27,25 @@ function gutenview_register_settings_page() {
 add_action( 'admin_menu', 'gutenview_register_settings_page' );
 
 /**
+ * Add a "Settings" link to the plugin's row on the Plugins screen.
+ *
+ * @param array $links Existing action links.
+ * @return array Action links with the settings link first.
+ */
+function gutenview_add_action_links( $links ) {
+	$settings_link = sprintf(
+		'<a href="%s">%s</a>',
+		esc_url( admin_url( 'options-general.php?page=gutenview' ) ),
+		esc_html__( 'Settings', 'gutenview' )
+	);
+
+	array_unshift( $links, $settings_link );
+
+	return $links;
+}
+add_filter( 'plugin_action_links_' . plugin_basename( GUTENVIEW_FILE ), 'gutenview_add_action_links' );
+
+/**
  * Register the plugin's setting, sections, and fields.
  *
  * @return void
@@ -177,16 +196,30 @@ function gutenview_register_settings() {
 	);
 
 	add_settings_field(
-		'gutenview_field_end_block_inserter',
-		__( 'Add-block button at the end', 'gutenview' ),
+		'gutenview_field_edge_block_inserters',
+		__( 'Add-block buttons at the edges', 'gutenview' ),
 		'gutenview_render_checkbox_field',
 		'gutenview',
 		'gutenview_section_discoverability',
 		array(
-			'key'         => 'end_block_inserter',
-			'label_for'   => 'gutenview_end_block_inserter',
-			'label'       => __( 'Show a "+" below the last block', 'gutenview' ),
-			'description' => __( 'Adds a working "add block" button beneath the final top-level block, so there is always an obvious place to continue writing instead of hunting for the right spot to click.', 'gutenview' ),
+			'key'         => 'edge_block_inserters',
+			'label_for'   => 'gutenview_edge_block_inserters',
+			'label'       => __( 'Show a "+" above the first block and below the last', 'gutenview' ),
+			'description' => __( 'Adds working "add block" buttons at the top and bottom of the document, where WordPress offers none, so there is always an obvious place to start writing and to continue instead of hunting for the right spot to click.', 'gutenview' ),
+		)
+	);
+
+	add_settings_field(
+		'gutenview_field_toolbar_delete_button',
+		__( 'Delete button in the toolbar', 'gutenview' ),
+		'gutenview_render_checkbox_field',
+		'gutenview',
+		'gutenview_section_discoverability',
+		array(
+			'key'         => 'toolbar_delete_button',
+			'label_for'   => 'gutenview_toolbar_delete_button',
+			'label'       => __( 'Show a "Delete" button in the block toolbar', 'gutenview' ),
+			'description' => __( 'Deleting a block is a common, deliberate action, but WordPress keeps it inside the toolbar\'s overflow ("three dots") menu. This adds it to the toolbar itself, in its own group just before that menu.', 'gutenview' ),
 		)
 	);
 }
@@ -204,13 +237,14 @@ function gutenview_sanitize_settings( $input ) {
 	$output = array();
 
 	// Boolean toggles (checkbox present === on).
-	$output['enabled']             = ! empty( $input['enabled'] );
-	$output['view_same_tab']       = ! empty( $input['view_same_tab'] );
-	$output['reposition_snackbar'] = ! empty( $input['reposition_snackbar'] );
-	$output['adjustable_sidebar']  = ! empty( $input['adjustable_sidebar'] );
-	$output['add_block_links']     = ! empty( $input['add_block_links'] );
-	$output['remove_block_button'] = ! empty( $input['remove_block_button'] );
-	$output['end_block_inserter']  = ! empty( $input['end_block_inserter'] );
+	$output['enabled']               = ! empty( $input['enabled'] );
+	$output['view_same_tab']         = ! empty( $input['view_same_tab'] );
+	$output['reposition_snackbar']   = ! empty( $input['reposition_snackbar'] );
+	$output['adjustable_sidebar']    = ! empty( $input['adjustable_sidebar'] );
+	$output['add_block_links']       = ! empty( $input['add_block_links'] );
+	$output['remove_block_button']   = ! empty( $input['remove_block_button'] );
+	$output['edge_block_inserters']  = ! empty( $input['edge_block_inserters'] );
+	$output['toolbar_delete_button'] = ! empty( $input['toolbar_delete_button'] );
 
 	// Block outlines mode (whitelist).
 	$allowed_modes            = array( 'off', 'hover', 'always' );
