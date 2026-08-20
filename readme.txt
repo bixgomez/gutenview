@@ -83,9 +83,16 @@ inside the editor.
 
 == Installation ==
 
-1. Upload the `gutenview` folder to `/wp-content/plugins/`.
-2. Activate the plugin through the "Plugins" screen in WordPress.
-3. Go to Settings > GutenView (or the "Settings" link in the plugin's row on the
+Choose either installation method:
+
+* With Composer: run `composer require bixgomez/gutenview:^0.1` from a
+  Composer-managed WordPress project.
+* Manually: upload the `gutenview` folder to `/wp-content/plugins/`.
+
+Then:
+
+1. Activate the plugin through the "Plugins" screen in WordPress.
+2. Go to Settings > GutenView (or the "Settings" link in the plugin's row on the
    Plugins screen) to review the enhancements.
 
 Every enhancement starts switched on, so the plugin does its thing as soon as it

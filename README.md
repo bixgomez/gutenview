@@ -35,8 +35,59 @@ is additive and reversible.
 - PHP 7.4 or later
 
 There is no build step. The plugin ships plain PHP, CSS, and JavaScript, all
-loaded directly. Nothing needs compiling, and there are no npm or Composer
-dependencies.
+loaded directly. Nothing needs compiling, and there are no npm or runtime PHP
+library dependencies. Composer distribution uses `composer/installers` only to
+place the package in WordPress's plugin directory.
+
+## Installation
+
+### Composer
+
+Once the release is available through Packagist, install it from the consuming
+WordPress project:
+
+```bash
+composer require bixgomez/gutenview:^0.1
+```
+
+GutenView declares the `wordpress-plugin` package type and installs as
+`gutenview`. In a conventional Composer-managed WordPress project, that places
+the package at `wp-content/plugins/gutenview`.
+
+Projects with a custom web root can map WordPress plugins to their own path in
+the consuming project's `composer.json`. For example:
+
+```json
+{
+  "extra": {
+    "installer-paths": {
+      "web/wp-content/plugins/{$name}/": ["type:wordpress-plugin"]
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/installers": true
+    }
+  }
+}
+```
+
+Composer-managed sites should update GutenView through Composer so the selected
+version remains recorded in the project's `composer.lock`:
+
+```bash
+composer update bixgomez/gutenview
+```
+
+### Manual installation
+
+Download a release from the
+[GitHub repository](https://github.com/bixgomez/gutenview), extract it as
+`wp-content/plugins/gutenview`, and activate GutenView through the WordPress
+Plugins screen.
+
+Native installation and updates through the WordPress admin will become
+available after GutenView is accepted into the WordPress.org plugin directory.
 
 ## Architecture
 
@@ -309,10 +360,14 @@ The plugin targets the WordPress Coding Standards, which WordPress.org requires:
 
 ## Distribution
 
-Target is the WordPress.org plugin directory, under GPL-2.0-or-later.
+GitHub is the canonical source repository. Packagist provides Composer
+distribution, and the WordPress.org plugin directory is the target for native
+WordPress installation and updates. All distributions use the same tagged
+releases under GPL-2.0-or-later.
 
 Outstanding before submission:
 
+- Publish the first tagged GitHub release and register it with Packagist
 - Confirm the `gutenview` slug is available
 - Run Plugin Check
 - Add screenshots

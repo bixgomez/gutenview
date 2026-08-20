@@ -1,0 +1,31 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "bixgomez/gutenview",
+    "description": "Makes the WordPress block editor's hidden editing affordances visible and discoverable.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://gutenview.com",
+    "keywords": [
+        "wordpress",
+        "wordpress plugin",
+        "block editor",
+        "gutenberg",
+        "usability"
+    ],
+    "authors": [
+        {
+            "name": "Richard Gilbert"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/bixgomez/gutenview/issues",
+        "source": "https://github.com/bixgomez/gutenview"
+    },
+    "require": {
+        "php": ">=7.4",
+        "composer/installers": "^2.0"
+    },
+    "extra": {
+        "installer-name": "gutenview"
+    }
+}
