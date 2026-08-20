@@ -341,6 +341,7 @@
 		distanceFromRight = window.innerWidth - rect.right;
 		sidebarSide = distanceFromLeft < distanceFromRight ? 'left' : 'right';
 		separatorX = 'left' === sidebarSide ? rect.right : rect.left;
+		body.dataset.gutenviewSidebarSide = sidebarSide;
 
 		handle.style.left =
 			( 'left' === sidebarSide ? separatorX : separatorX - handle.offsetWidth ) +

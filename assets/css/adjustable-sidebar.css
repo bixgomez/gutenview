@@ -36,23 +36,37 @@
 	}
 
 	/*
-	 * A real focusable separator lives outside Gutenberg's React tree. The broad
-	 * hit area makes dragging forgiving, while the two-pixel rule keeps its
-	 * resting appearance quieter than the sidebar's controls.
+	 * Keep the editor scrollbar clear of the resize handle. The margin creates a
+	 * gutter between the scroll container and whichever side holds the sidebar.
+	 */
+	body.gutenview-adjustable-sidebar.gutenview-sidebar-is-open[data-gutenview-sidebar-side="right"] .interface-interface-skeleton__content {
+		margin-right: 8px;
+	}
+
+	body.gutenview-adjustable-sidebar.gutenview-sidebar-is-open[data-gutenview-sidebar-side="left"] .interface-interface-skeleton__content {
+		margin-left: 8px;
+	}
+
+	/*
+	 * A real focusable separator lives outside Gutenberg's React tree. Its full
+	 * eight-pixel box is both the visible divider and the drag target.
 	 */
 	.gutenview-sidebar-resize-handle {
 		appearance: none;
-		background: transparent;
+		background: #ddd;
 		border: 0;
+		border-left: 1.5px solid #bbb;
+		border-right: 1.5px solid #bbb;
 		box-shadow: none;
 		box-sizing: border-box;
 		cursor: col-resize;
 		display: none;
 		margin: 0;
+		opacity: 0.8;
 		padding: 0;
 		position: fixed;
 		touch-action: none;
-		width: 12px;
+		width: 8px;
 		z-index: 99997;
 	}
 
@@ -60,27 +74,7 @@
 		display: block;
 	}
 
-	.gutenview-sidebar-resize-handle::after {
-		background: #757575;
-		bottom: 0;
-		content: "";
-		left: 0;
-		opacity: 0.35;
-		position: absolute;
-		top: 0;
-		transition: opacity 0.1s linear, background-color 0.1s linear;
-		width: 2px;
-	}
-
-	.gutenview-sidebar-resize-handle[data-sidebar-side="right"]::after {
-		left: auto;
-		right: 0;
-	}
-
-	.gutenview-sidebar-resize-handle:hover::after,
-	.gutenview-sidebar-resize-handle:focus-visible::after,
-	body.gutenview-sidebar-is-resizing .gutenview-sidebar-resize-handle::after {
-		background: var( --wp-admin-theme-color, #3858e9 );
+	.gutenview-sidebar-resize-handle:hover {
 		opacity: 1;
 	}
 
@@ -124,11 +118,5 @@
 
 	body.gutenview-adjustable-sidebar .interface-interface-skeleton__sidebar .post_lang_choice {
 		width: 100%;
-	}
-}
-
-@media ( prefers-reduced-motion: reduce ) {
-	.gutenview-sidebar-resize-handle::after {
-		transition: none;
 	}
 }
