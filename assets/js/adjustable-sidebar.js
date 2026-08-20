@@ -342,7 +342,9 @@
 		sidebarSide = distanceFromLeft < distanceFromRight ? 'left' : 'right';
 		separatorX = 'left' === sidebarSide ? rect.right : rect.left;
 
-		handle.style.left = separatorX - handle.offsetWidth / 2 + 'px';
+		handle.style.left =
+			( 'left' === sidebarSide ? separatorX : separatorX - handle.offsetWidth ) +
+			'px';
 		handle.style.top = rect.top + 'px';
 		handle.style.height = rect.height + 'px';
 		handle.dataset.sidebarSide = sidebarSide;

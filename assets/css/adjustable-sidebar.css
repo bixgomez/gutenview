@@ -53,7 +53,7 @@
 		position: fixed;
 		touch-action: none;
 		width: 12px;
-		z-index: 100001;
+		z-index: 99997;
 	}
 
 	body.gutenview-adjustable-sidebar.gutenview-sidebar-is-open .gutenview-sidebar-resize-handle {
@@ -64,12 +64,17 @@
 		background: #757575;
 		bottom: 0;
 		content: "";
-		left: 5px;
+		left: 0;
 		opacity: 0.35;
 		position: absolute;
 		top: 0;
 		transition: opacity 0.1s linear, background-color 0.1s linear;
 		width: 2px;
+	}
+
+	.gutenview-sidebar-resize-handle[data-sidebar-side="right"]::after {
+		left: auto;
+		right: 0;
 	}
 
 	.gutenview-sidebar-resize-handle:hover::after,
