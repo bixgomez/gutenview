@@ -3,7 +3,7 @@
  * Plugin Name:       GutenView
  * Plugin URI:        https://gutenview.com
  * Description:       Makes the WordPress block editor's hidden editing affordances visible and discoverable.
- * Version:           0.1.0
+ * Version:           0.1.1
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            Richard Gilbert
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin version.
  */
-define( 'GUTENVIEW_VERSION', '0.1.0' );
+define( 'GUTENVIEW_VERSION', '0.1.1' );
 
 /**
  * Absolute path to the main plugin file.
