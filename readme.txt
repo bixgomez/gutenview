@@ -1,5 +1,5 @@
 === GutenView ===
-Contributors: fezziwigmedia
+Contributors: bixgomez
 Tags: block editor, gutenberg, editor, usability
 Requires at least: 6.5
 Tested up to: 7.0
